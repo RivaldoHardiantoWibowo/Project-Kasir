@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Members;
 use Illuminate\Database\Eloquent\Model;
 
 class Selling extends Model
@@ -11,6 +12,7 @@ class Selling extends Model
      *
      * @var array<string>
      */
+    protected $table = 'transaction';
     protected $fillable = [
         'member_id',
         'total_price',
@@ -18,4 +20,15 @@ class Selling extends Model
         'product_id',
         'qty',
     ];
+
+    public function member(){
+        return $this->belongsTo(Members::class, 'member_id');
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

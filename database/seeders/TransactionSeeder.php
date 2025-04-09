@@ -19,7 +19,8 @@ class TransactionSeeder extends Seeder
             'user_id' => 2,
             'product_id' => 1,
             'qty' => 2,
-            
+            'created_at' => now(),
+            'updated_at' => now()
         ]);
     }
 }

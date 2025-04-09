@@ -16,7 +16,7 @@ class ProductsSeeder extends Seeder
         DB::table('products')->insert([
             'name' => 'Baygon khusus jangkrik',
             'price' => 20000,
-            'image' => 'baygon.png',
+            'image' => 'products/aGbJUJmJt7Fgg8wpiHtdlmITZhm9NDXOXgHHMUmn.png',
             'stock' => 10,
             'created_at' => now(),
             'updated_at' => now()

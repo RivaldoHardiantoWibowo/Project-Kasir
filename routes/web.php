@@ -1,7 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+
+    Route::resource('products', ProductController::class);
+    Route::put('/product/{id}/updateStock', [ProductController::class, 'updateStock'])->name('products.updateStock');
+    Route::post('/storeCart', [PenjualanController::class,'cart'])->name('store.cart');
+    Route::resource('pembelians', PenjualanController::class);
+    Route::resource('users', UserController::class);
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return view('auth.login');
+    })->name('login');
+    Route::post('/login', [UserController::class, 'authLogin'])->name('authLogin');
 });
