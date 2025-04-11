@@ -17,8 +17,14 @@ class TransactionSeeder extends Seeder
             'member_id' => 1,
             'total_price' => 40000,
             'user_id' => 2,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('detail_transacts')->insert([
+            'transaction_id' => 1,
             'product_id' => 1,
-            'qty' => 2,
+            'qty'=> 1,
             'created_at' => now(),
             'updated_at' => now()
         ]);

@@ -11,6 +11,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
     Route::put('/product/{id}/updateStock', [ProductController::class, 'updateStock'])->name('products.updateStock');
     Route::post('/storeCart', [PenjualanController::class,'cart'])->name('store.cart');
+    Route::patch('/orderMember', [PenjualanController::class, 'checkMember'])->name('orderMember');
     Route::resource('pembelians', PenjualanController::class);
     Route::resource('users', UserController::class);
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');

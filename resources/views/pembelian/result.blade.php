@@ -38,12 +38,12 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <table class="table table-borderless">
-                    @if ()
+
                     <tr>
                         <td>Poin Digunakan</td>
                         <td class="text-end">0</td>
                     </tr>
-                    @endif
+                
 
                     <tr>
                         <td>Kasir</td>

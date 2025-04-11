@@ -17,8 +17,6 @@ class Selling extends Model
         'member_id',
         'total_price',
         'user_id',
-        'product_id',
-        'qty',
     ];
 
     public function member(){
@@ -30,5 +28,10 @@ class Selling extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function details()
+{
+    return $this->hasMany(detail_transact::class, 'transaction_id');
+}
 
 }
