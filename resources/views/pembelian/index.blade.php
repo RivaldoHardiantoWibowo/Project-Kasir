@@ -7,7 +7,7 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <button class="btn btn-primary">Export Penjualan (.xlsx)</button>
+            <button class="btn btn-primary"><a href="{{ route('formatexcel') }}" class="text-white">Export Penjualan (.xlsx)</a></button>
         </div>
         @if (Auth::user()->role == 'kasir')
         <div>
@@ -50,9 +50,6 @@
             </tr>
         </thead>
         <tbody>
-            @php
-            $id = 1;
-            @endphp
             @foreach ($transaction as $key => $item)
             <tr>
                 <th scope="row" class="text-center">{{ $key +1 }}</th>
@@ -66,7 +63,9 @@
                     <div class="d-grid gap-4 d-md-flex justify-content-md-end">
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                             data-bs-target="#modalDetail{{ $item->id }}">Lihat</button>
-                        <button class="btn btn-primary" type="button">Unduh Bukti</button>
+                        <button class="btn btn-primary" type="button">
+                            <a href="{{ route('formatpdf', $item->id) }}" class="text-white">Unduh Bukti</a>
+                        </button>
                     </div>
                 </td>
                 @endforeach
@@ -94,7 +93,8 @@
 
 @foreach ($transaction as $item)
 <!-- Modal Detail Penjualan -->
-<div class="modal fade" id="modalDetail{{ $item->id }}" tabindex="-1" aria-labelledby="modalDetailLabel{{ $item->id }}" aria-hidden="true">
+<div class="modal fade" id="modalDetail{{ $item->id }}" tabindex="-1" aria-labelledby="modalDetailLabel{{ $item->id }}"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -126,7 +126,7 @@
                         <tr>
                             <td>{{ $detail->product->name }}</td>
                             <td>{{ $detail->qty }}</td>
-                            <td>{{ $detail->product->name }}</td>
+                            <td>{{ $detail->product->price }}</td>
                             <td>{{ $item->total_price }}</td>
                             @endforeach
                         </tr>
@@ -134,12 +134,13 @@
                     <tfoot>
                         <tr>
                             <td colspan="3" class="text-end"><strong>Total</strong></td>
-                            <td><strong>Rp. 2.680</strong></td>
+                            <td><strong>{{ $item->total_price }}</strong></td>
                         </tr>
                     </tfoot>
                 </table>
 
-                <p class="mt-3 text-muted"><small>Dibuat pada : 2025-04-10 03:45:50<br>Oleh : Petugas</small></p>
+                <p class="mt-3 text-muted"><small>Dibuat pada : {{ $item->created_at }}<br>Oleh : {{ $item->user->name
+                        }}</small></p>
 
             </div>
             <div class="modal-footer">

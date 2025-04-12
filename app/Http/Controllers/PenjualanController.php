@@ -7,6 +7,7 @@ use App\Models\detail_transact;
 use App\Models\Members;
 use App\Models\Selling;
 use App\Models\Products;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +18,7 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $transaction = Selling::with('user', 'member','details.product')->get();
+        $transaction = Selling::with('user', 'member', 'details.product')->get();
         return view('pembelian.index', compact('transaction'));
     }
 
@@ -80,22 +81,21 @@ class PenjualanController extends Controller
             // }
 
             $sellingData = [];
-        foreach ($carts as $cart) {
+            foreach ($carts as $cart) {
 
-            $sellingData[] = [
-                'product_name' => $cart->product->name,
-                'price' => $cart->product->price,
-                'qty' => $cart->qty,
-                'subtotal' => $cart->product->price * $cart->qty,
-            ];
+                $sellingData[] = [
+                    'product_name' => $cart->product->name,
+                    'price' => $cart->product->price,
+                    'qty' => $cart->qty,
+                    'subtotal' => $cart->product->price * $cart->qty,
+                ];
 
-            $checkpoin = 0;
+                $checkpoin = 0;
 
-            if ($member) {
-                $checkpoin = Selling::where('member_id', $member->id)->count();
+                if ($member) {
+                    $checkpoin = Selling::where('member_id', $member->id)->count();
+                }
             }
-
-        }
             return view('pembelian.checkMember', [
                 'dataTransaction' => $sellingData,
                 'member' => $member,
@@ -157,7 +157,8 @@ class PenjualanController extends Controller
         return view('pembelian.member', compact('products', 'cartData'));
     }
 
-    public function checkMember(Request $request) {
+    public function checkMember(Request $request)
+    {
 
         $member = Members::where('phone_number', $request->phone_number)->first();
 
@@ -227,6 +228,22 @@ class PenjualanController extends Controller
             'kembalian' => $kembalian,
             'invoiceNumber' => $invoiceNumber
         ]);
+    }
+
+
+    public function CetakPdf(Request $request, $id)
+    {
+
+        $transaction = Selling::where('id', $id)->with('user', 'member', 'details.product')->first();
+
+        $data = [
+            'transaction' => $transaction,
+            'member' => $transaction->member,
+            'details' => $transaction->details,
+        ];
+
+        $pdf = Pdf::loadView('pembelian.invoice', $data);
+        return $pdf->stream('bukti-pembelian.pdf');
     }
 
     /**

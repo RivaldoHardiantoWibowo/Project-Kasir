@@ -24,7 +24,7 @@ class TransactionSeeder extends Seeder
         DB::table('detail_transacts')->insert([
             'transaction_id' => 1,
             'product_id' => 1,
-            'qty'=> 1,
+            'qty'=> 2,
             'created_at' => now(),
             'updated_at' => now()
         ]);
